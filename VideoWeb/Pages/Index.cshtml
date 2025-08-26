@@ -1,0 +1,70 @@
+﻿@page
+@using Microsoft.JSInterop
+@model VideoWeb.Pages.IndexModel
+@{
+    ViewData["Title"] = "Video Player";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放器</title>
+    <style>
+    </style>
+</head>
+<body style="text-align:center">
+    <h1>视频播放器网页版</h1>
+    <br />
+    <label for="video-url">选择视频: </label>
+    <br />
+    <select onselect="pathSelect()" id="sel">
+        <!--<option value="1"></option>
+        <option value="2"></option>-->
+        @{
+            List<string> files = [];
+            void Director(string dir)
+            {
+                DirectoryInfo d = new DirectoryInfo(dir);
+                FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+                foreach (FileSystemInfo fsinfo in fsinfos)
+                {
+                    if (fsinfo is DirectoryInfo)     //判断是否为文件夹
+                    {
+                        Director(fsinfo.FullName);//递归调用
+                    }
+                    else
+                    {
+                        string op = fsinfo.Name.Split(".")[fsinfo.Name.Split(".").Length - 1];
+                        if (op=="mp4"/* || op=="lnk"*/)
+                        files.Add(fsinfo.FullName.Substring(fsinfo.FullName.IndexOf("wwwroot")+7));
+                    }
+                }
+            }
+        }
+        @{Director("./wwwroot/");}
+        @for (int i=0; i < files.Count; i++)
+        {
+            <option value="@i">@files[i]</option>
+        }
+    </select>
+    <br/>
+    <button onclick="playVideo()">播放视频</button>
+    <br />
+    <br />
+    <video style="width: 1000px;height: 600px;" id="videoPlayer" controls autoplay="autoplay">
+    </video>
+    <script>
+        function playVideo() {
+            var objSelect = document.getElementById("sel");
+            const videoUrl = objSelect.options[objSelect.selectedIndex].text;
+            const videoElement = document.getElementById('videoPlayer');
+            
+            if (videoElement) {
+                    videoElement.src = videoUrl;
+                    videoElement.play();
+            }
+        }
+        function pathSelect(){
+
+        }
+    </script>
+</body>
