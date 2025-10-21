@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="videoWeb_data\**" />
+    <Content Remove="videoWeb_data\**" />
+    <EmbeddedResource Remove="videoWeb_data\**" />
+    <None Remove="videoWeb_data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 
