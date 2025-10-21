@@ -1,13 +1,12 @@
 ﻿@using static VideoWeb.DataCore;
 @using VideoWeb.Const;
 @{
-    ViewData["Title"] = "Video Player";
 }
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频播放器</title>
-    <script src="js/StartPage/script.js"></script>
+    <script src="@config.Website.Url.UrlRoot/js/StartPage/script.js"></script>
     <style>
     </style>
 </head>
@@ -16,7 +15,7 @@
     <br />
     <label for="video-url">选择视频: </label>
     <br />
-    <select onselect="pathSelect()" id="sel">
+    <select onselect="pathSelect()" id="sel" data-urlroot="@config.Website.Url.UrlRoot">
         <!--<option value="1"></option>
         <option value="2"></option>-->
         @{

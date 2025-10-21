@@ -4,7 +4,7 @@
     const videoElement = document.getElementById('videoPlayer');
 
     if (videoElement) {
-        videoElement.src = videoUrl;
+        videoElement.src = `${objSelect.dataset.urlroot}/${videoUrl}`;
         videoElement.play();
     }
 }

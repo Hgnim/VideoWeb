@@ -63,7 +63,7 @@ namespace VideoWeb
 						}
 						app.UseStaticFiles(new StaticFileOptions {
 							FileProvider = new PhysicalFileProvider(_dir),
-							RequestPath = "/" + Path.GetFileName(_dir),
+							RequestPath = $"/{Path.GetFileName(_dir)}",
 						});
 					}
 				}
