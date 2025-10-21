@@ -1,26 +1,61 @@
+using VideoWeb.Models;
+using static VideoWeb.DataCore;
+using static VideoWeb.Const.FilePath;
+
 namespace VideoWeb
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddRazorPages();
-            builder.WebHost.UseUrls("http://*:80");            
-            var app = builder.Build();
+		public static void Main(string[] args) {
+			Console.WriteLine(
+@$"服务端启动"
+				);
+			try {
+				static void saveData() => ConfigModel.SaveData(configFile, config);
 
-            //app.MapGet("/", () => "Hello World!");
-            app.UsePathBase("/video");
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+				if (!Directory.Exists(dataDir)) Directory.CreateDirectory(dataDir);
 
-            app.UseRouting();
+				if (!File.Exists(configFile))
+					saveData();
+				else
+					config = ConfigModel.ReadData(configFile);
 
-            app.UseAuthorization();
+				if (config.UpdateConfig == true) {
+					config.UpdateConfig = false;
+					saveData();
+					Console.WriteLine("配置文件已更新，已退出服务端");
+					return;
+				}
+			} catch { Console.WriteLine("处理配置文件时出现错误!"); return; }
 
-            app.MapRazorPages();
 
-            app.Run();
-        }
-    }
+			var builder = WebApplication.CreateBuilder(args);
+			builder.Services.AddControllersWithViews();
+
+			builder.WebHost.UseUrls(config.Website.Url.Get());
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddSession();
+
+			var app = builder.Build();
+
+			app.UsePathBase(config.Website.Url.UrlRoot);
+			app.UseSession();
+
+			/*// Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }*/
+			app.UseHttpsRedirection();
+			app.UseStaticFiles();
+			app.UseRouting();
+			app.UseAuthorization();
+			app.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=StartPage}/{action=Index}"); // /{id?}");
+			app.Run();
+		}
+	}
 }
