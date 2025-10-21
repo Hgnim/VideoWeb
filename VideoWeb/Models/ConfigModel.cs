@@ -108,6 +108,33 @@ namespace VideoWeb.Models {
 			get => website;
 		}
 
+		private string[] directoryReadList = [];
+		/// <summary>
+		/// 映射目录列表，将从指定的目录中读取视频文件
+		/// </summary>
+		public string[] DirectoryReadList {
+			set => directoryReadList = value;
+			get => directoryReadList;
+		}
+
+		private string[] fileExtensionWhitelist = ["mp4"];
+		/// <summary>
+		/// 扩展名白名单，白名单内的文件才会被展示输出
+		/// </summary>
+		public string[] FileExtensionWhitelist {
+			set => fileExtensionWhitelist = value;
+			get => fileExtensionWhitelist;
+		}
+
+		private bool showGithubLink = true;
+		/// <summary>
+		/// 显示Github仓库链接
+		/// </summary>
+		public bool ShowGithubLink {
+			set => showGithubLink = value;
+			get => showGithubLink;
+		}
+
 
 		private bool updateConfig = true;
 		/// <summary>

@@ -1,6 +1,5 @@
-﻿@page
-@using Microsoft.JSInterop
-@model VideoWeb.Pages.IndexModel
+﻿@using static VideoWeb.DataCore;
+@using VideoWeb.Const;
 @{
     ViewData["Title"] = "Video Player";
 }
@@ -8,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频播放器</title>
+    <script src="js/StartPage/script.js"></script>
     <style>
     </style>
 </head>
@@ -20,27 +20,46 @@
         <!--<option value="1"></option>
         <option value="2"></option>-->
         @{
-            List<string> files = [];
-            void Director(string dir)
+            bool ExtensionCheck(string ext)
             {
-                DirectoryInfo d = new DirectoryInfo(dir);
-                FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
-                foreach (FileSystemInfo fsinfo in fsinfos)
+                foreach(string ex in config.FileExtensionWhitelist)
                 {
-                    if (fsinfo is DirectoryInfo)     //判断是否为文件夹
-                    {
-                        Director(fsinfo.FullName);//递归调用
-                    }
-                    else
-                    {
-                        string op = fsinfo.Name.Split(".")[fsinfo.Name.Split(".").Length - 1];
-                        if (op=="mp4"/* || op=="lnk"*/)
-                        files.Add(fsinfo.FullName.Substring(fsinfo.FullName.IndexOf("wwwroot")+7));
-                    }
+                    if (ext == ex)
+                        return true;
                 }
+                return false;
+            }
+            List<string> files = [];
+            void Director(string path,string dirName,bool is3wroot=false)
+            {
+                try {
+                    DirectoryInfo d = new DirectoryInfo(path);
+                    FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+                    foreach (FileSystemInfo fsinfo in fsinfos) {
+                        if (fsinfo is DirectoryInfo)     //判断是否为文件夹
+                        {
+                            Director(fsinfo.FullName, System.IO.Path.GetFileName(fsinfo.FullName));//递归调用
+                        }
+                        else {
+                            string ex = fsinfo.Name.Split(".")[fsinfo.Name.Split(".").Length - 1];
+                            if (ExtensionCheck(ex))
+                                files.Add(fsinfo.FullName.Substring(fsinfo.FullName.IndexOf(dirName) + (is3wroot ? dirName.Length + 1 : 0)));
+                        }
+                    }
+                }catch(Exception ex){ Console.WriteLine($"error: {ex.Message}"); }
             }
         }
-        @{Director("./wwwroot/");}
+        @{
+            Director("./wwwroot/videos","wwwroot",true);
+            foreach(string dir in config.DirectoryReadList)
+            {
+                string _dir=dir;
+				if (_dir.Substring(_dir.Length-1) is "/" or "\\") {
+					_dir=_dir.Substring(0,_dir.Length-1);//去掉结尾的斜杠
+				}
+                Director(_dir,System.IO.Path.GetFileName(_dir));
+            }
+        }
         @for (int i=0; i < files.Count; i++)
         {
             <option value="@i">@files[i]</option>
@@ -52,19 +71,8 @@
     <br />
     <video style="width: 1000px;height: 600px;" id="videoPlayer" controls autoplay="autoplay">
     </video>
-    <script>
-        function playVideo() {
-            var objSelect = document.getElementById("sel");
-            const videoUrl = objSelect.options[objSelect.selectedIndex].text;
-            const videoElement = document.getElementById('videoPlayer');
-            
-            if (videoElement) {
-                    videoElement.src = videoUrl;
-                    videoElement.play();
-            }
-        }
-        function pathSelect(){
-
-        }
-    </script>
+    @if (config.ShowGithubLink)
+    {
+        <a style="position:absolute;right:0;bottom:0;" href="@About.githubUrl">Github</a>
+    }
 </body>

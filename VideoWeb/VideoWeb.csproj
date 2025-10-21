@@ -5,10 +5,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <RootNamespace>VideoWeb</RootNamespace>
+	  <Company>Hgnim</Company>
+	  <AssemblyVersion>1.0.0.1021</AssemblyVersion>
+	  <FileVersion>1.0.0.1021</FileVersion>
+	  <Version>1.0.0.20251021</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,4 +6,6 @@
 *.csproj.user
 */.config
 
-**/wwwroot
+**/wwwroot/**/*.mp4
+!**/wwwroot/videos/Example.mp4
+**/videoWeb_data
