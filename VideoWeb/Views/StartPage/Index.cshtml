@@ -37,7 +37,7 @@
                     foreach (FileSystemInfo fsinfo in fsinfos) {
                         if (fsinfo is DirectoryInfo)     //判断是否为文件夹
                         {
-                            Director(fsinfo.FullName, System.IO.Path.GetFileName(fsinfo.FullName));//递归调用
+                            Director(fsinfo.FullName, dirName);//递归调用
                         }
                         else {
                             string ex = fsinfo.Name.Split(".")[fsinfo.Name.Split(".").Length - 1];
