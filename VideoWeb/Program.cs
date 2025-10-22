@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using VideoWeb.Models;
 using static VideoWeb.Const.FilePath;
@@ -54,6 +55,8 @@ namespace VideoWeb
             }*/
 			app.UseHttpsRedirection();
 			{
+				/*var provider = new FileExtensionContentTypeProvider();
+				provider.Mappings[".mkv"] = "video/x-matroska";*///支持mkv格式视频文件的MIME类型
 				app.UseStaticFiles();
 				foreach(string dir in config.DirectoryReadList) {
 					if (Directory.Exists(dir)) {
@@ -64,6 +67,7 @@ namespace VideoWeb
 						app.UseStaticFiles(new StaticFileOptions {
 							FileProvider = new PhysicalFileProvider(_dir),
 							RequestPath = $"/{Path.GetFileName(_dir)}",
+							//ContentTypeProvider = provider
 						});
 					}
 				}
