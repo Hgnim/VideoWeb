@@ -2,15 +2,14 @@
 @using VideoWeb.Const;
 @{
 }
-<head>
+<head data-page="StartPage_Index">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频播放器</title>
-    <script src="@config.Website.Url.UrlRoot/js/StartPage/script.js"></script>
-    <style>
-    </style>
+    <link rel="stylesheet" href="~/dist/css/site.css" type="text/css" asp-append-version="true">
+    <script src="~/dist/js/site.js" type="text/javascript" asp-append-version="true"></script>
 </head>
-<body style="text-align:center">
+<body>
     <h1>视频播放器网页版</h1>
     <br />
     <label for="video-url">选择视频: </label>
@@ -65,13 +64,13 @@
         }
     </select>
     <br/>
-    <button onclick="playVideo()">播放视频</button>
+    <button onclick="playVideo()">加载视频</button>
     <br />
     <br />
-    <video style="width: 1000px;height: 600px;" id="videoPlayer" controls autoplay="autoplay">
+    <video id="videoPlayer" controls autoplay="autoplay" onvolumechange="cookieVolumeChange();">
     </video>
     @if (config.ShowGithubLink)
     {
-        <a style="position:absolute;right:0;bottom:0;" href="@About.githubUrl">Github</a>
+        <a id="github-url" href="@About.githubUrl">Github</a>
     }
 </body>

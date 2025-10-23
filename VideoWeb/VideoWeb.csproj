@@ -16,14 +16,17 @@
     <Content Remove="videoWeb_data\**" />
     <EmbeddedResource Remove="videoWeb_data\**" />
     <None Remove="videoWeb_data\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\videos\" />
+	<Folder Include="wwwroot\videos\" />
+	<Content Remove="wwwroot\videos\Example.mp4" />
+	<Folder Include="Script\js\" />
+	<Folder Include="Script\css" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
+  <Target Name="WebpackBuild" BeforeTargets="Build">
+  	<Exec Command="npm run build" />
+  </Target>
 </Project>

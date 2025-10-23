@@ -5,6 +5,8 @@
 */appsettings*.json
 *.csproj.user
 */.config
+*/wwwroot/dist
+node_modules
 
 **/wwwroot/**/*.mp4
 !**/wwwroot/videos/Example.mp4

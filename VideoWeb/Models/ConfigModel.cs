@@ -135,6 +135,38 @@ namespace VideoWeb.Models {
 			get => showGithubLink;
 		}
 
+		public class AdvancedC {
+			//private string[,] mappings = new string[,] { { "mp4", "video/mp4" },{ ".mkv", "video/x-matroska" } };
+			private List<List<string>> mappings = [
+				["mp4", "video/mp4"],
+				[".m4v" ,"video/x-m4v"],
+				[".webm","video/webm"],
+				[".ogv" ,"video/ogg"],
+				[".ogg" ,"video/ogg"],
+				[".mkv" ,"video/x-matroska"],
+				[".avi" ,"video/x-msvideo"],
+				[".mov" ,"video/quicktime"],
+				[".flv" ,"video/x-flv"],
+				[".f4v" ,"video/x-f4v"],
+				[".3gp" ,"video/3gpp"],
+				[".3g2" ,"video/3gpp2"],
+				[".mts" ,"video/mp2t"],
+				[".m2ts","video/mp2t"],
+				];
+			/// <summary>
+			/// 返回扩展名与MIME类型的映射表
+			/// </summary>
+			public List<List<string>> Mappings {
+				set => mappings = value;
+				get => mappings;
+			}
+		}
+		private AdvancedC advanced = new();
+		public AdvancedC Advanced {
+			set => advanced = value;
+			get => advanced;
+		}
+
 
 		private bool updateConfig = true;
 		/// <summary>

@@ -55,9 +55,16 @@ namespace VideoWeb
             }*/
 			app.UseHttpsRedirection();
 			{
-				/*var provider = new FileExtensionContentTypeProvider();
-				provider.Mappings[".mkv"] = "video/x-matroska";*///支持mkv格式视频文件的MIME类型
-				app.UseStaticFiles();
+				var provider = new FileExtensionContentTypeProvider();
+				//provider.Mappings[".mkv"] = "video/x-matroska";//支持mkv格式视频文件的MIME类型
+				foreach(List<string> map in config.Advanced.Mappings) {
+					if (map.Count==2) {
+						provider.Mappings[map[0]] = map[1];
+					}
+				}
+				app.UseStaticFiles(new StaticFileOptions {
+					ContentTypeProvider = provider
+				});
 				foreach(string dir in config.DirectoryReadList) {
 					if (Directory.Exists(dir)) {
 						string _dir=dir;
@@ -67,7 +74,7 @@ namespace VideoWeb
 						app.UseStaticFiles(new StaticFileOptions {
 							FileProvider = new PhysicalFileProvider(_dir),
 							RequestPath = $"/{Path.GetFileName(_dir)}",
-							//ContentTypeProvider = provider
+							ContentTypeProvider = provider
 						});
 					}
 				}
